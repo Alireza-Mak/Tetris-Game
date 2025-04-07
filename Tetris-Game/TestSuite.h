@@ -6,8 +6,8 @@
 // 1) Call TestSuite::runTestSuite() from main()
 // 2) Uncomment the #define statements directly below:
 //-----------------------------------------------------------------------
-//#define POINT
-//#define TETROMINO
+#define POINT
+#define TETROMINO
 
 class TestSuite {
 
