@@ -86,5 +86,6 @@ void Tetromino::printToConsole() const{
 			}
 			found_point ? std::cout << "X" : std::cout << ".";
 		}
+		std::cout << '\n';
 	}
 };
