@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gameboard.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="TestSuite.cpp" />
     <ClCompile Include="TestSuite2.cpp" />
