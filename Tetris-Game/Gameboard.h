@@ -112,6 +112,11 @@ private:
     /// </summary>
     /// <param name="rows">Vector of row indices to remove.</param>
     void removeRows(const std::vector<int> rows);
+
+    /// <summary>
+    /// Adds the main function for the purpose of testing
+    /// </summary>
+    friend int main();
 };
 
 #endif /* GAMEBOARD_H */
