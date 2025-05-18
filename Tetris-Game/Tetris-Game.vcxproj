@@ -135,9 +135,11 @@
   <ItemGroup>
     <ClCompile Include="Gameboard.cpp" />
     <ClCompile Include="GridTetromino.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="TestSuite1.cpp" />
     <ClCompile Include="TestSuite2.cpp" />
+    <ClCompile Include="TestSuite3.cpp" />
     <ClCompile Include="Tetris-Game.cpp" />
     <ClCompile Include="Tetromino.cpp" />
   </ItemGroup>
@@ -147,6 +149,8 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="TestSuite1.h" />
     <ClInclude Include="TestSuite2.h" />
+    <ClInclude Include="TestSuite3.h" />
+    <ClInclude Include="Tetris-Game.h" />
     <ClInclude Include="Tetromino.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,36 +1,61 @@
-#include <iostream>
-#include "Gameboard.h"
-#include "TestSuite1.h"
-#include "TestSuite2.h"
-#include <SFML/Graphics.hpp>
+#include"Tetris-Game.h"
 
+const int TetrisGame::BLOCK_WIDTH = 32;
+const int TetrisGame::BLOCK_HEIGHT = 32;
+const double TetrisGame::MAX_SECONDS_PER_TICK = 0.75;
+const double TetrisGame::MIN_SECONDS_PER_TICK = 0.20;
+const int TetrisGame::SCORE_FONT_SIZE = 18;
 
-int main()
+TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const Point& gameboardOffset, const Point& nextShapeOffset):
+	window{ window }, blockSprite{ blockSprite }, gameboardOffset{ gameboardOffset }, nextShapeOffset{ nextShapeOffset }
 {
-	// A test suite is a collection of tests that are run to verify the functionality of Tetromino Class.
-	TestSuite1::runTestSuite1();
+	reset();
+	// setup our font for drawing the score
+	if (!scoreFont.loadFromFile("fonts/RedOctober.ttf"))
+	{
+		assert(false && "Missing font: RedOctober.ttf");
+	};
+	scoreText.setFont(scoreFont);
+	scoreText.setCharacterSize(SCORE_FONT_SIZE);
+	scoreText.setFillColor(sf::Color::White);
+	scoreText.setPosition(SCORE_INFO::X_POS, SCORE_INFO::Y_POS);
+};
 
-	// A test suite is a collection of tests that are run to verify the functionality of Gameboard Class.
-	TestSuite2::runTestSuite2();
+void TetrisGame::draw() {
+	
+};
 
-    // Simple SFML test to confirm graphics rendering works on x86 systems.
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+void TetrisGame::onKeyPressed(sf::Event event) {};
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+void TetrisGame::processGameLoop(float secondsSinceLastLoop) {};
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+void TetrisGame::tick() {};
 
-	return  0;
-}
+void TetrisGame::reset() {};
+
+void TetrisGame::pickNextShape() {};
+
+bool TetrisGame::spawnNextShape() { return true; };
+
+bool TetrisGame::attemptRotate(GridTetromino& shape) { return true; };
+
+bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) { return true; };
+
+void TetrisGame::drop(GridTetromino& shape) {};
+
+void TetrisGame::lock(const GridTetromino& shape) {};
+
+
+void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha) const {};
+
+void TetrisGame::drawGameboard() {};
+
+void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topLeft, float alpha) const {};
+
+void TetrisGame::updateScoreDisplay() {};
+
+bool TetrisGame::isPositionLegal(const GridTetromino& shape) const { return true; };
+
+bool TetrisGame::isWithinBorders(const GridTetromino& shape) const { return true; };
+
+void TetrisGame::determineSecondsPerTick(){};

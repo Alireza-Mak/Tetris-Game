@@ -72,6 +72,11 @@ public:
 	/// </remarks>
 	/// <returns>A vector of Points, each adjusted to the grid location.</returns>
 	const std::vector<Point> getBlockLocsMappedToGrid() const;
+
+	/// <summary>
+	/// Allows unit testing class to access private members.
+	/// </summary>
+	friend class TestSuite3;
 };
 
 #endif /* GRIDTETROMINO_H */
