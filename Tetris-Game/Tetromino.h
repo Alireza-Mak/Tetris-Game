@@ -11,7 +11,7 @@ enum class TetColor { RED, ORANGE, YELLOW, GREEN, BLUE_LIGHT, BLUE_DARK, PURPLE 
 
 
 // Enum representing the 7 classic Tetromino shapes.
-enum TetShape { S, Z, L, J, O, I, T };
+enum TetShape { S, Z, L, J, O, I, T, COUNT };
 
 // Namespace holding constant values related to Tetromino grid logic.
 namespace const_vals {
@@ -66,6 +66,13 @@ public:
     /// Outputs the Tetromino block positions to the console for debugging or visualization.
     /// </summary>
     void printToConsole() const;
+
+
+    /// <summary>
+    /// Returns a random TetShape by generating a random number within the range of available shapes.
+    /// </summary>
+    /// <returns>A random TetShape.</returns>
+    TetShape getRandomShape();
 
     /// <summary>
     /// Allows unit testing class to access private members.
