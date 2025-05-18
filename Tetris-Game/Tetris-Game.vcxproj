@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Gameboard.cpp" />
+    <ClCompile Include="GridTetromino.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="TestSuite1.cpp" />
     <ClCompile Include="TestSuite2.cpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Gameboard.h" />
+    <ClInclude Include="GridTetromino.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="TestSuite1.h" />
     <ClInclude Include="TestSuite2.h" />

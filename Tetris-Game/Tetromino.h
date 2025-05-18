@@ -5,19 +5,15 @@
 #include <vector>
 #include "Point.h"
 
-/// <summary>
-/// Enum representing the available Tetromino colors.
-/// </summary>
+
+// Enum representing the available Tetromino colors.
 enum class TetColor { RED, ORANGE, YELLOW, GREEN, BLUE_LIGHT, BLUE_DARK, PURPLE };
 
-/// <summary>
-/// Enum representing the 7 classic Tetromino shapes.
-/// </summary>
+
+// Enum representing the 7 classic Tetromino shapes.
 enum TetShape { S, Z, L, J, O, I, T };
 
-/// <summary>
-/// Namespace holding constant values related to Tetromino grid logic.
-/// </summary>
+// Namespace holding constant values related to Tetromino grid logic.
 namespace const_vals {
     constexpr int block_size = 4;
     const Point start_grid(-3, 3);
@@ -29,13 +25,13 @@ namespace const_vals {
 /// including its shape, color, and the positions of its individual blocks.
 /// Provides functionality for rotation, shape assignment, and console display.
 /// </summary>
-/// <author>Alireza Kermanshahi</author>
-/// <date>April 6, 2025</date>
 class Tetromino {
 private:
-    TetColor color;                   ///< Color of the Tetromino
-    TetShape shape;                   ///< Shape type of the Tetromino
-    std::vector<Point> blockLocs;     ///< Locations of individual blocks that make up the Tetromino
+    TetColor color;                   // Color of the Tetromino
+    TetShape shape;                   // Shape type of the Tetromino
+
+protected:
+    std::vector<Point> blockLocs;     // Locations of individual blocks that make up the Tetromino
 
 public:
     /// <summary>
