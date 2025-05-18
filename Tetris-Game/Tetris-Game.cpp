@@ -22,7 +22,7 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 };
 
 void TetrisGame::draw() {
-	
+	drawBlock(Point(0, 0), 0, 0, TetColor::RED); // Testing the drawBlock method
 };
 
 void TetrisGame::onKeyPressed(sf::Event event) {};
@@ -46,7 +46,16 @@ void TetrisGame::drop(GridTetromino& shape) {};
 void TetrisGame::lock(const GridTetromino& shape) {};
 
 
-void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha) const {};
+void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha) const {
+	int colorIndex = static_cast<int>(color);
+	blockSprite.setTextureRect(sf::IntRect(BLOCK_WIDTH * colorIndex, 0, BLOCK_WIDTH, BLOCK_HEIGHT));
+	float xPos = topLeft.getX() + xOffset * BLOCK_WIDTH;
+	float yPos = topLeft.getY() + yOffset * BLOCK_HEIGHT;
+	blockSprite.setPosition(sf::Vector2f(xPos, yPos));
+	blockSprite.setColor(sf::Color(255, 255, 255, alpha * 255));
+	window.draw(blockSprite);
+
+};
 
 void TetrisGame::drawGameboard() {};
 
