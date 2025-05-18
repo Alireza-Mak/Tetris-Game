@@ -2,21 +2,21 @@
 #include "Tetromino.h"
 #include <cassert>
 #include <iostream>
-#include "TestSuite.h"
+#include "TestSuite1.h"
 
 
-bool TestSuite::runTestSuite()
+bool TestSuite1::runTestSuite1()
 {
-	std::cout << "=== Running TestSuite =========================" << "\n";
+	std::cout << "=== Running TestSuite1 =========================" << "\n";
 	// run some sanity tests on our classes to ensure they're working as expected.
-	std::cout << "uncomment the #define statements in TestSuite.h when ready to test.\n";
+	std::cout << "uncomment the #define statements in TestSuite1.h when ready to test.\n";
 	testPointClass();
 	testTetrominoClass();
-	std::cout << "=== TestSuite complete ========================" << "\n\n";
+	std::cout << "=== TestSuite1 complete ========================" << "\n\n";
 	return true;
 }
 
-bool TestSuite::testPointClass()
+bool TestSuite1::testPointClass()
 {
 #ifdef POINT
 	std::cout << " testPointClass()...\n";
@@ -92,7 +92,7 @@ bool TestSuite::testPointClass()
 
 
 
-bool TestSuite::testTetrominoClass()
+bool TestSuite1::testTetrominoClass()
 {
 #ifdef TETROMINO
 	std::cout << " testTetrominoClass...";

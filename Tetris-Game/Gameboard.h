@@ -3,8 +3,6 @@
 
 #include <vector>
 #include "Point.h"
-#include <iostream>
-#include <iomanip>
 
 /// <summary>
 /// Represents the Tetris-style gameboard, storing block content
@@ -79,7 +77,7 @@ public:
     /// </summary>
     /// <param name="points">List of Points to check.</param>
     /// <returns>True if all valid points are EMPTY_BLOCK, otherwise false.</returns>
-    bool areAllLocsEmpty(const std::vector<Point> points);
+    bool areAllLocsEmpty(const std::vector<Point> points) const;
 
     /// <summary>
     /// Removes all completed rows from the grid.
@@ -91,14 +89,14 @@ public:
     /// Gets the spawn location of new tetrominos.
     /// </summary>
     /// <returns>The spawn Point.</returns>
-    const Point& getSpawnLoc();
+    const Point& getSpawnLoc() const;
 
 private:
     bool isValidPoint(const Point& point) const;
     bool isValidPoint(int x, int y) const;
-    bool isRowCompleted(int row);
+    bool isRowCompleted(int row) const;
     void fillRow(int row, int content);
-    std::vector<int> getCompletedRowIndices();
+    std::vector<int> getCompletedRowIndices() const;
     void copyRowIntoRow(int sourceRow, int targetRow);
 
     /// <summary>
@@ -117,6 +115,11 @@ private:
     /// Adds the main function for the purpose of testing
     /// </summary>
     friend int main();
+
+    /// <summary>
+	/// Adds the TestSuite2 class for the purpose of testing
+    /// </summary>
+    friend class TestSuite2;
 };
 
 #endif /* GAMEBOARD_H */

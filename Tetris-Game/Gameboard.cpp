@@ -67,7 +67,7 @@ void Gameboard::setContent(const std::vector<Point> points, int content) {
 
 };
 
-bool Gameboard::areAllLocsEmpty(const std::vector<Point>points) {
+bool Gameboard::areAllLocsEmpty(const std::vector<Point>points) const {
 	for (const auto& point : points) {
 		if (isValidPoint(point)) {
 			if (grid[point.getY()][point.getX()] != EMPTY_BLOCK) {
@@ -83,13 +83,12 @@ bool Gameboard::areAllLocsEmpty(const std::vector<Point>points) {
 
 int Gameboard::removeCompletedRows() {
 	std::vector<int> completedRows = getCompletedRowIndices();
-	int count = completedRows.size();
 	removeRows(completedRows);
-	return count;
+	return completedRows.size();
 };
 
 
-const Point& Gameboard::getSpawnLoc() {
+const Point& Gameboard::getSpawnLoc() const {
 	return spawnLoc;
 };
 
@@ -107,7 +106,7 @@ bool Gameboard::isValidPoint(int x, int y) const {
 	return true;
 };
 
-bool Gameboard::isRowCompleted(int row) {
+bool Gameboard::isRowCompleted(int row) const {
 	assert(row >= 0 && row < MAX_Y && "row index is out of bounds");
 	for (int col = 0; col < MAX_X; col++) {
 		if (grid[row][col] == EMPTY_BLOCK) {
@@ -123,7 +122,7 @@ void Gameboard::fillRow(int row, int content) {
 	}
 };
 
-std::vector<int> Gameboard::getCompletedRowIndices() {
+std::vector<int> Gameboard::getCompletedRowIndices() const {
 	std::vector<int> completedRows;
 	for (int row = 0; row < MAX_Y; row++) {
 		if (isRowCompleted(row)) {
