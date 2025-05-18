@@ -22,7 +22,7 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 };
 
 void TetrisGame::draw() {
-	drawBlock(Point(0, 0), 0, 0, TetColor::RED); // Testing the drawBlock method
+	drawGameboard();
 };
 
 void TetrisGame::onKeyPressed(sf::Event event) {};
@@ -57,7 +57,17 @@ void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const
 
 };
 
-void TetrisGame::drawGameboard() {};
+void TetrisGame::drawGameboard() {
+	board.setContent(5, 5, 2);
+	for (size_t y = 0; y < board.MAX_Y; y++)
+	{
+		for (size_t x = 0; x < board.MAX_X; x++) {
+			if (board.getContent(x, y) != board.EMPTY_BLOCK) {
+				drawBlock(gameboardOffset, x, y, static_cast<TetColor>(board.getContent(x, y))); // Example usage
+			}
+		}
+	}
+};
 
 void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topLeft, float alpha) const {};
 

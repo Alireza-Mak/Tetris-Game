@@ -171,6 +171,7 @@ private:
 	/// <param name="xOffset">The x-offset of the block within the gameboard, in blocks.</param>
 	/// <param name="yOffset">The y-offset of the block within the gameboard, in blocks.</param>
 	/// <param name="color">The color of the Tetris block, which determines the texture portion to use.</param>
+	/// <param name="alpha">The alpha transparency value for the block (default is 1.0 for fully opaque).</param>
 	/// </summary>
 	void drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha = 1.0f) const;
 										
@@ -188,6 +189,7 @@ private:
 	/// from which individual block offsets are calculated.
 	/// <param name="tetromino">The tetromino to draw, with its blocks mapped to the grid.</param>
 	/// <param name="topLeft">The top-left position on the screen to use as a base point for drawing.</param>
+	/// <param name="alpha">The alpha transparency value for the block (default is 1.0 for fully opaque).</param>
 	/// </summary>
 	void drawTetromino(const GridTetromino& tetromino, const Point& topLeft, float alpha = 1.0f) const;
 
