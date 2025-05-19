@@ -10,8 +10,6 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 	window{ window }, blockSprite{ blockSprite }, gameboardOffset{ gameboardOffset }, nextShapeOffset{ nextShapeOffset }
 {
 	reset();
-	currentShape.setShape(Tetromino::getRandomShape()); // Testing the random shape
-	currentShape.setGridLoc(board.getSpawnLoc()); // Set the spawn location of the current shape
 	// setup our font for drawing the score
 	if (!scoreFont.loadFromFile("fonts/RedOctober.ttf"))
 	{
@@ -88,11 +86,26 @@ void TetrisGame::tick() {
 	}
 };
 
-void TetrisGame::reset() {};
+void TetrisGame::reset() {
+	score = 0;
+	updateScoreDisplay();
+	determineSecondsPerTick();
+	board.empty();
+	pickNextShape();
+	spawnNextShape();
+	pickNextShape();
 
-void TetrisGame::pickNextShape() {};
+};
 
-bool TetrisGame::spawnNextShape() { return true; };
+void TetrisGame::pickNextShape() {
+	nextShape.setShape(Tetromino::getRandomShape());
+};
+
+bool TetrisGame::spawnNextShape() { 
+	currentShape = nextShape;
+	currentShape.setGridLoc(board.getSpawnLoc());
+	return isPositionLegal(currentShape);
+};
 
 bool TetrisGame::attemptRotate(GridTetromino& shape) { 
 	GridTetromino temp = shape;

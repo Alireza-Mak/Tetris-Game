@@ -65,11 +65,13 @@ void Tetromino::setShape(const TetShape& shape) {
 };
 
 void Tetromino::rotateClockwise() {
-	for (auto& point : this->blockLocs) {
-		Point new_point = point;
-		new_point.multiplyX(-1);
-		new_point.swapXY();
-		point = new_point;
+	if (shape != TetShape::O) {
+		for (auto& point : this->blockLocs) {
+			Point new_point = point;
+			new_point.multiplyX(-1);
+			new_point.swapXY();
+			point = new_point;
+		}
 	}
 };
 
