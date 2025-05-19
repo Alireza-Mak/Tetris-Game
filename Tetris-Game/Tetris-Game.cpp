@@ -22,7 +22,10 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 };
 
 void TetrisGame::draw() {
-	drawTetromino(currentShape, gameboardOffset); // Test drawing the current shape
+	drawTetromino(currentShape, gameboardOffset);
+	drawTetromino(nextShape, nextShapeOffset);
+	window.draw(scoreText);
+	drawGameboard();
 };
 
 void TetrisGame::onKeyPressed(sf::Event event) {
@@ -170,7 +173,10 @@ void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topL
 	}
 };
 
-void TetrisGame::updateScoreDisplay() {};
+void TetrisGame::updateScoreDisplay() {
+	std::string result = "Score: " + std::to_string(score);
+	scoreText.setString(result);
+};
 
 bool TetrisGame::isPositionLegal(const GridTetromino& shape) const { 
 	return board.areAllLocsEmpty(shape.getBlockLocsMappedToGrid()) && isWithinBorders(shape);
