@@ -14,26 +14,29 @@ void Gameboard::empty() {
 };
 
 void Gameboard::printToConsole() const{
-	for (int row = 0; row < MAX_Y; row++) {
-		for (int col = 0; col < MAX_X; col++) {
-			if (grid[row][col] == EMPTY_BLOCK) {
-				std::cout << std::setw(2) << ".";
+	for (size_t row = 0; row < MAX_Y; row++) {
+		for (size_t col = 0; col < MAX_X; col++)
+		{
+			int value = grid[row][col];
+			if (value == EMPTY_BLOCK) {
+				std::cout << '.' << std::setw(2);
 			}
 			else {
-				std::cout << std::setw(2) << grid[row][col];
+				std::cout << value << std::setw(2);
 			}
 		}
-		std::cout << std::endl;
+		std::cout << '\n';
 	}
+	std::cout << '\n';
 };
 
 int Gameboard::getContent(const Point& point) const {
-	assert(isValidPoint(point) && "this point is not available in grid");
+	assert(isValidPoint(point));
 	return grid[point.getY()][point.getX()];
 };
 
 int Gameboard::getContent(int x, int y) const {
-	assert(isValidPoint(x, y) && "this point is not available in grid");
+	assert(isValidPoint(x, y));
 	return grid[y][x];
 };
 
@@ -41,17 +44,11 @@ void Gameboard::setContent(const Point& point, int content) {
 	if (isValidPoint(point)) {
 		grid[point.getY()][point.getX()] = content;
 	}
-	else {
-		std::cout << "Invalid point: " << point.getX() << ", " << point.getY() << std::endl;
-	}
 };
 
 void Gameboard::setContent(int x, int y, int content) {
 	if (isValidPoint(x, y)) {
 		grid[y][x] = content;
-	}
-	else {
-		std::cout << "Invalid point: " << x << ", " << y << std::endl;
 	}
 };
 
@@ -59,9 +56,6 @@ void Gameboard::setContent(const std::vector<Point> points, int content) {
 	for (const auto& point : points) {
 		if (isValidPoint(point)) {
 			grid[point.getY()][point.getX()] = content;
-		}
-		else {
-			std::cout << "Invalid point: " << point.getX() << ", " << point.getY() << std::endl;
 		}
 	}
 
@@ -73,9 +67,6 @@ bool Gameboard::areAllLocsEmpty(const std::vector<Point>points) const {
 			if (grid[point.getY()][point.getX()] != EMPTY_BLOCK) {
 				return false;
 			}
-		}
-		else {
-			std::cout << "Invalid point: " << point.getX() << ", " << point.getY() << std::endl;
 		}
 	}
 	return true;
@@ -93,17 +84,11 @@ const Point& Gameboard::getSpawnLoc() const {
 };
 
 bool Gameboard::isValidPoint(const Point& point) const {
-	if (point.getX() < 0 || point.getX() >= MAX_X || point.getY() < 0 || point.getY() >= MAX_Y) {
-		return false;
-	}
-	return true;
+	return isValidPoint(point.getX(), point.getY());
 };
 
 bool Gameboard::isValidPoint(int x, int y) const {
-	if (x < 0 || x >= MAX_X || y < 0 || y >= MAX_Y) {
-		return false;
-	}
-	return true;
+	return x > EMPTY_BLOCK && x <= MAX_X && y > EMPTY_BLOCK && y <= MAX_Y;
 };
 
 bool Gameboard::isRowCompleted(int row) const {
@@ -133,15 +118,15 @@ std::vector<int> Gameboard::getCompletedRowIndices() const {
 };
 
 void Gameboard::copyRowIntoRow(int sourceRow, int targetRow) {
-	assert(sourceRow >= 0 && sourceRow < MAX_Y && "source row index is out of bounds");
-	assert(targetRow >= 0 && targetRow < MAX_Y && "target row index is out of bounds");
+	assert(sourceRow >= 0 && sourceRow < MAX_Y);
+	assert(targetRow >= 0 && targetRow < MAX_Y);
 	for (int col = 0; col < MAX_X; col++) {
 		grid[targetRow][col] = grid[sourceRow][col];
 	}
 };
 
 void Gameboard::removeRow(int row) {
-	assert(row >= 0 && row < MAX_Y && "row index is out of bounds");
+	assert(row >= EMPTY_BLOCK && row < MAX_Y);
 	for (int y = row - 1; y >= 0; y--) {
 		copyRowIntoRow(y, y + 1);
 	}

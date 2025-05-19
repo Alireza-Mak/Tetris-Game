@@ -117,8 +117,19 @@ void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topL
 
 void TetrisGame::updateScoreDisplay() {};
 
-bool TetrisGame::isPositionLegal(const GridTetromino& shape) const { return true; };
+bool TetrisGame::isPositionLegal(const GridTetromino& shape) const { 
+	return board.areAllLocsEmpty(shape.getBlockLocsMappedToGrid()) && isWithinBorders(shape);
+};
 
-bool TetrisGame::isWithinBorders(const GridTetromino& shape) const { return true; };
+bool TetrisGame::isWithinBorders(const GridTetromino& shape) const { 
+	for (auto& loc : shape.getBlockLocsMappedToGrid()) {
+		int x = loc.getX();
+		int y = loc.getY();
+		if (x < 0 || x >= board.MAX_X || y >= board.MAX_Y) {
+			return false;
+		};
+	}
+	return true;
+};
 
 void TetrisGame::determineSecondsPerTick(){};
