@@ -17,6 +17,9 @@ int main()
 	// A test suite is a collection of tests that are run to verify the functionality of Gameboard Class.
 	TestSuite3::runTestSuite3();
 
+	// run srand to get different random shape anytime
+	srand(time(0));
+
 	sf::Sprite blockSprite;			// the tetromino block sprite
 	sf::Texture blockTexture;		// the tetromino block texture
 	sf::Sprite backgroundSprite;	// the background sprite

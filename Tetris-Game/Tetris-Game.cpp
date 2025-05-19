@@ -10,6 +10,8 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 	window{ window }, blockSprite{ blockSprite }, gameboardOffset{ gameboardOffset }, nextShapeOffset{ nextShapeOffset }
 {
 	reset();
+	currentShape.setShape(Tetromino::getRandomShape()); // Testing the random shape
+	currentShape.setGridLoc(board.getSpawnLoc()); // Set the spawn location of the current shape
 	// setup our font for drawing the score
 	if (!scoreFont.loadFromFile("fonts/RedOctober.ttf"))
 	{
@@ -22,7 +24,7 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 };
 
 void TetrisGame::draw() {
-	drawGameboard();
+	drawTetromino(currentShape, gameboardOffset); // Test drawing the current shape
 };
 
 void TetrisGame::onKeyPressed(sf::Event event) {};
@@ -58,18 +60,21 @@ void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const
 };
 
 void TetrisGame::drawGameboard() {
-	board.setContent(5, 5, 2);
 	for (size_t y = 0; y < board.MAX_Y; y++)
 	{
 		for (size_t x = 0; x < board.MAX_X; x++) {
 			if (board.getContent(x, y) != board.EMPTY_BLOCK) {
-				drawBlock(gameboardOffset, x, y, static_cast<TetColor>(board.getContent(x, y))); // Example usage
+				drawBlock(gameboardOffset, x, y, static_cast<TetColor>(board.getContent(x, y)));
 			}
 		}
 	}
 };
 
-void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topLeft, float alpha) const {};
+void TetrisGame::drawTetromino(const GridTetromino& tetromino, const Point& topLeft, float alpha) const {
+	for (auto& loc : tetromino.getBlockLocsMappedToGrid()) {
+		drawBlock(topLeft, loc.getX(), loc.getY(), tetromino.getColor(), alpha);
+	}
+};
 
 void TetrisGame::updateScoreDisplay() {};
 

@@ -72,7 +72,7 @@ public:
     /// Returns a random TetShape by generating a random number within the range of available shapes.
     /// </summary>
     /// <returns>A random TetShape.</returns>
-    TetShape getRandomShape();
+    static TetShape getRandomShape();
 
     /// <summary>
     /// Allows unit testing class to access private members.
