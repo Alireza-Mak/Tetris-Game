@@ -27,7 +27,29 @@ void TetrisGame::draw() {
 	drawTetromino(currentShape, gameboardOffset); // Test drawing the current shape
 };
 
-void TetrisGame::onKeyPressed(sf::Event event) {};
+void TetrisGame::onKeyPressed(sf::Event event) {
+	if (event.type == sf::Event::KeyPressed) {
+		switch (event.key.code) {
+		case sf::Keyboard::Up:
+			attemptRotate(currentShape);
+			break;
+		case sf::Keyboard::Left:
+			attemptMove(currentShape, -1, 0);
+			break;
+		case sf::Keyboard::Right:
+			attemptMove(currentShape, 1, 0);
+			break;
+		case sf::Keyboard::Down:
+			attemptMove(currentShape, 0, 1);
+			break;
+		case sf::Keyboard::Space:
+			drop(currentShape);
+			break;
+		default:
+			break;
+		}
+	}
+};
 
 void TetrisGame::processGameLoop(float secondsSinceLastLoop) {};
 
@@ -39,9 +61,26 @@ void TetrisGame::pickNextShape() {};
 
 bool TetrisGame::spawnNextShape() { return true; };
 
-bool TetrisGame::attemptRotate(GridTetromino& shape) { return true; };
+bool TetrisGame::attemptRotate(GridTetromino& shape) { 
+	GridTetromino temp = shape;
+	temp.rotateClockwise();
+	if (isPositionLegal(temp)) {
+		shape.rotateClockwise();
+		return true;
+	}
+	return false;
+};
 
-bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) { return true; };
+bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) {
+	GridTetromino temp = shape;
+	temp.move(x, y);
+
+	if (isPositionLegal(temp)) {
+		shape.move(x, y);
+		return true;
+	}
+	return false;
+};
 
 void TetrisGame::drop(GridTetromino& shape) {};
 
