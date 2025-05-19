@@ -83,7 +83,12 @@ public:
     /// <summary>
     /// Grants access to private members for testing
     /// </summary>
-    friend class TestSuite;
+    friend class TestSuite1;
+
+    /// <summary>
+    /// Allows unit testing class to access private members.
+    /// </summary>
+    friend class TestSuite3;
 };
 
 #endif

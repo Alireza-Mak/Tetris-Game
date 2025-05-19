@@ -5,12 +5,13 @@ const int TetrisGame::BLOCK_HEIGHT = 32;
 const double TetrisGame::MAX_SECONDS_PER_TICK = 0.75;
 const double TetrisGame::MIN_SECONDS_PER_TICK = 0.20;
 const int TetrisGame::SCORE_FONT_SIZE = 18;
+const float TetrisGame::GHOST_ALPHA = 0.5;
+const double TetrisGame::SCORE_TICK_REDUCTION_FACTOR = 1000.0;
 
 TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const Point& gameboardOffset, const Point& nextShapeOffset):
 	window{ window }, blockSprite{ blockSprite }, gameboardOffset{ gameboardOffset }, nextShapeOffset{ nextShapeOffset }
 {
 	reset();
-	// setup our font for drawing the score
 	if (!scoreFont.loadFromFile("fonts/RedOctober.ttf"))
 	{
 		assert(false && "Missing font: RedOctober.ttf");
@@ -19,9 +20,18 @@ TetrisGame::TetrisGame(sf::RenderWindow& window, sf::Sprite& blockSprite, const 
 	scoreText.setCharacterSize(SCORE_FONT_SIZE);
 	scoreText.setFillColor(sf::Color::White);
 	scoreText.setPosition(SCORE_INFO::X_POS, SCORE_INFO::Y_POS);
+
+	if (!music.openFromFile(SONGS::SOUND_DIRECTORY + SONGS::TETRIS_MUSIC))
+	{
+		assert(false && SONGS::TETRIS_MUSIC.c_str());
+	};
+	music.play();
+	music.setVolume(SONGS::MUSIC_VOLUME);
+	music.setLoop(true);
 };
 
 void TetrisGame::draw() {
+	drawTetromino(ghostShape, gameboardOffset, GHOST_ALPHA);
 	drawTetromino(currentShape, gameboardOffset);
 	drawTetromino(nextShape, nextShapeOffset);
 	window.draw(scoreText);
@@ -45,6 +55,10 @@ void TetrisGame::onKeyPressed(sf::Event event) {
 			break;
 		case sf::Keyboard::Space:
 			drop(currentShape);
+			lock(currentShape);
+			break;
+		case sf::Keyboard::Escape:
+			exit(1);
 			break;
 		default:
 			break;
@@ -54,6 +68,7 @@ void TetrisGame::onKeyPressed(sf::Event event) {
 
 void TetrisGame::processGameLoop(float secondsSinceLastLoop) {
 	secondsSinceLastTick += secondsSinceLastLoop;
+	updateGhostShape();
 	if (secondsSinceLastTick > secondsPerTick) {
 		tick();
 		secondsSinceLastTick -= secondsPerTick;
@@ -74,6 +89,7 @@ void TetrisGame::processGameLoop(float secondsSinceLastLoop) {
 				}
 				score += pointsAwarded;
 				updateScoreDisplay();
+				addSound(SONGS::SOUND_DIRECTORY + SONGS::ROW_COMPLETED);
 			}
 			determineSecondsPerTick();
 		}
@@ -97,7 +113,6 @@ void TetrisGame::reset() {
 	pickNextShape();
 	spawnNextShape();
 	pickNextShape();
-
 };
 
 void TetrisGame::pickNextShape() {
@@ -115,6 +130,7 @@ bool TetrisGame::attemptRotate(GridTetromino& shape) {
 	temp.rotateClockwise();
 	if (isPositionLegal(temp)) {
 		shape.rotateClockwise();
+		addSound(SONGS::SOUND_DIRECTORY + SONGS::ROTATE_BLOCK);
 		return true;
 	}
 	return false;
@@ -133,6 +149,7 @@ bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) {
 
 void TetrisGame::drop(GridTetromino& shape) {
 	while (attemptMove(shape, 0, 1));
+	addSound(SONGS::SOUND_DIRECTORY + SONGS::DROP_BLOCK);
 };
 
 void TetrisGame::lock(const GridTetromino& shape) {
@@ -143,7 +160,6 @@ void TetrisGame::lock(const GridTetromino& shape) {
 	}
 	shapePlacedSinceLastGameLoop = true;
 };
-
 
 void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha) const {
 	int colorIndex = static_cast<int>(color);
@@ -193,4 +209,25 @@ bool TetrisGame::isWithinBorders(const GridTetromino& shape) const {
 	return true;
 };
 
-void TetrisGame::determineSecondsPerTick(){};
+void TetrisGame::updateGhostShape() {
+	ghostShape = currentShape;
+	while (attemptMove(ghostShape, 0, 1));
+};
+
+void TetrisGame::determineSecondsPerTick(){
+	secondsPerTick = MAX_SECONDS_PER_TICK;
+	double secondsReduction = score / SCORE_TICK_REDUCTION_FACTOR;
+	secondsPerTick -= secondsReduction;
+
+	if (secondsPerTick < MIN_SECONDS_PER_TICK) {
+		secondsPerTick = MIN_SECONDS_PER_TICK;
+	}
+};
+
+void TetrisGame::addSound(const std::string& fileName) {
+	if (!buffer.loadFromFile(fileName)) {
+		assert(false && ("Missing Sound: " + fileName).c_str());
+	}
+	soundRotateBlock.setBuffer(buffer);
+	soundRotateBlock.play();
+}

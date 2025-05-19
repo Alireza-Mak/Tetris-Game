@@ -120,6 +120,11 @@ private:
 	/// Adds the TestSuite2 class for the purpose of testing
     /// </summary>
     friend class TestSuite2;
+
+    /// <summary>
+    /// Allows unit testing class to access private members.
+    /// </summary>
+    friend class TestSuite3;
 };
 
 #endif /* GAMEBOARD_H */

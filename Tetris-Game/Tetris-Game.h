@@ -5,6 +5,7 @@
 #include "GridTetromino.h"
 #include <SFML/Graphics.hpp>
 #include<cassert>
+#include <SFML/Audio.hpp>
 
 /// <summary>
 /// Contains constants related to scoring and display position in the game.
@@ -21,6 +22,21 @@ namespace SCORE_INFO {
 	const int Y_POS = 325;
 }
 
+/// <summary>
+/// Contains constants for game sound effects and music, including file names, directory path,
+/// and default music volume level.
+/// </summary>
+
+namespace SONGS {
+	const std::string SOUND_DIRECTORY = "sfx/";
+	const std::string DROP_BLOCK = "blockDrop.ogg";
+	const std::string ROTATE_BLOCK = "blockRotate.ogg";
+	const std::string ROW_COMPLETED = "levelUp.ogg";
+	const std::string GAME_OVER = "gameOver.ogg";
+	const std::string TETRIS_MUSIC = "tetrisMusic.ogg";
+	const int MUSIC_VOLUME = 10;
+}
+
 /**
  * @class TetrisGame
  * @brief Manages core Tetris game logic, rendering, and controls for a single player.
@@ -34,20 +50,23 @@ class TetrisGame
 {
 public:
 	// STATIC CONSTANTS
-	static const int BLOCK_WIDTH;				// pixel width of a tetris block, init to 32
-	static const int BLOCK_HEIGHT;				// pixel height of a tetris block, int to 32
-	static const double MAX_SECONDS_PER_TICK;	// the slowest "tick" rate (in seconds), init to 0.75
-	static const double MIN_SECONDS_PER_TICK;	// the fastest "tick" rate (in seconds), init to 0.20
-	static const int SCORE_FONT_SIZE;			// the font size of the score text display
+	static const int BLOCK_WIDTH;						// pixel width of a tetris block, init to 32
+	static const int BLOCK_HEIGHT;						// pixel height of a tetris block, int to 32
+	static const double MAX_SECONDS_PER_TICK;			// the slowest "tick" rate (in seconds), init to 0.75
+	static const double MIN_SECONDS_PER_TICK;			// the fastest "tick" rate (in seconds), init to 0.20
+	static const int SCORE_FONT_SIZE;					// the font size of the score text display
+	static const double SCORE_TICK_REDUCTION_FACTOR;	// Higher values make the game speed increase slower with score
+	static const float GHOST_ALPHA;						// Transparency level for the ghost piece (between 0 and 1)
 
 private:	
 	// MEMBER VARIABLES
 
 	// State members ---------------------------------------------
-	int score;					// the current game score.
-    Gameboard board;			// the gameboard (grid) to represent where all the blocks are.
-    GridTetromino nextShape;	// the tetromino shape that is "on deck".
-    GridTetromino currentShape;	// the tetromino that is currently falling.
+	int score;									// the current game score.
+    Gameboard board;							// the gameboard (grid) to represent where all the blocks are.
+    GridTetromino nextShape;					// the tetromino shape that is "on deck".
+    GridTetromino currentShape;					// the tetromino that is currently falling.
+	GridTetromino ghostShape;					// the tetromino that is a ghost on the board.
 	
 	// Graphics members ------------------------------------------
 	sf::Sprite& blockSprite;		// the sprite used for all the blocks.
@@ -57,6 +76,11 @@ private:
 
 	sf::Font scoreFont;				// SFML font for displaying the score.
 	sf::Text scoreText;				// SFML text object for displaying the score
+
+	sf::SoundBuffer buffer;         // Stores audio data for short sound effects
+	sf::Sound soundRotateBlock;     // Plays block rotation sound effect
+	sf::Music music;                // Plays background music in a loop
+
 									
 	// Time members ----------------------------------------------
 	// Note: a "tick" is the amount of time it takes a block to fall one line.
@@ -158,6 +182,18 @@ private:
 	/// <param name="shape">The tetromino to lock onto the gameboard.</param>
 	/// </summary>
 	void lock(const GridTetromino& shape);
+
+	/// <summary>
+	/// Updates the ghost shape by cloning the current shape and moving it downward until it reaches the lowest legal position.
+	/// </summary>
+	void updateGhostShape();
+
+	/// <summary>
+	/// Loads a sound file and plays it if successfully loaded.
+	/// If the file is missing, an assertion error is triggered with a message.
+	/// </summary>
+	/// <param name="fileName">The name of the sound file to load, located in the "sfx/" folder.</param>
+	void addSound(const std::string& fileName);
 	
 	// Graphics methods ==============================================
 	
