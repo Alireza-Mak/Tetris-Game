@@ -51,9 +51,42 @@ void TetrisGame::onKeyPressed(sf::Event event) {
 	}
 };
 
-void TetrisGame::processGameLoop(float secondsSinceLastLoop) {};
+void TetrisGame::processGameLoop(float secondsSinceLastLoop) {
+	secondsSinceLastTick += secondsSinceLastLoop;
+	if (secondsSinceLastTick > secondsPerTick) {
+		tick();
+		secondsSinceLastTick -= secondsPerTick;
+	}
+	if (shapePlacedSinceLastGameLoop) {
+		shapePlacedSinceLastGameLoop = false;
+		if (spawnNextShape()) {
+			pickNextShape();
+			int rowsRemoved = board.removeCompletedRows();
+			if (rowsRemoved > 0) {
+				int pointsAwarded;
+				switch (rowsRemoved) {
+				case 1: pointsAwarded = SCORE_INFO::ONE_ROW; break;
+				case 2: pointsAwarded = SCORE_INFO::TWO_ROWS; break;
+				case 3: pointsAwarded = SCORE_INFO::THREE_ROWS; break;
+				case 4: pointsAwarded = SCORE_INFO::FOUR_ROWS; break;
+				default: pointsAwarded = SCORE_INFO::DEFAULT_SCORE; break;
+				}
+				score += pointsAwarded;
+				updateScoreDisplay();
+			}
+			determineSecondsPerTick();
+		}
+		else {
+			reset();
+		}
+	}
+};
 
-void TetrisGame::tick() {};
+void TetrisGame::tick() {
+	if (!attemptMove(currentShape, 0, 1)) {
+		lock(currentShape);
+	}
+};
 
 void TetrisGame::reset() {};
 
@@ -82,9 +115,18 @@ bool TetrisGame::attemptMove(GridTetromino& shape, int x, int y) {
 	return false;
 };
 
-void TetrisGame::drop(GridTetromino& shape) {};
+void TetrisGame::drop(GridTetromino& shape) {
+	while (attemptMove(shape, 0, 1));
+};
 
-void TetrisGame::lock(const GridTetromino& shape) {};
+void TetrisGame::lock(const GridTetromino& shape) {
+	std::vector<Point> blockLocs = shape.getBlockLocsMappedToGrid();
+	for (auto& loc : blockLocs)
+	{
+		board.setContent(loc, static_cast<int>(shape.getColor()));
+	}
+	shapePlacedSinceLastGameLoop = true;
+};
 
 
 void TetrisGame::drawBlock(const Point& topLeft, int xOffset, int yOffset, const TetColor& color, float alpha) const {
